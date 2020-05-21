@@ -2,17 +2,9 @@
     <div class="message-list" ref="messageList">
         <div class="top" ref="top"></div>
         <div v-for="item in needDrawData" ref="messageItem">
-            <div @click="revocation(item)"
-                 :class="item.userId === 0 ? 'show-left': 'show-right'" class="img-msg"
-                 v-if="item.type === 'img'">
-                <img v-lazy="item.src">
-            </div>
-            <div @click="revocation(item)"
-                 :class="item.userId === 0 ? 'show-left': 'show-right'"
-                 v-else-if="item.type === 'text'">
-                <div class="text-msg">{{item.msg}}</div>
-            </div>
-            <div class="sys-msg" v-else>{{item.msg}}</div>
+            <img-msg v-if="item.type === 'img' && showImgMsg" :revocation="revocation" :item="item" :msgSource="item.userId === 0"></img-msg>
+            <text-msg v-if="item.type === 'text' && showTextMsg" :revocation="revocation" :item="item" :msgSource="item.userId === 0"></text-msg>
+            <sys-msg v-if="item.type === 'system' && showSysMsg" :item="item"></sys-msg>
         </div>
         <div class="bottom" ref="bottom"></div>
     </div>
@@ -20,7 +12,13 @@
 
 <script>
     import infinityLoad from "../utils/infinityLoad"
+    import imgMsg from "./imgMsg";
+    import textMsg from "./textMsg";
+    import sysMsg from "./sysMsg";
     export default {
+        components: {
+            imgMsg, textMsg, sysMsg
+        },
         props: {
             searchFn: {
                 type: Function,
@@ -33,6 +31,18 @@
             pageNo: {
                 type: Number,
                 default: 1
+            },
+            showImgMsg: {
+                type: Boolean,
+                default: true
+            },
+            showTextMsg: {
+                type: Boolean,
+                default: true
+            },
+            showSysMsg: {
+                type: Boolean,
+                default: true
             }
         },
         data() {
