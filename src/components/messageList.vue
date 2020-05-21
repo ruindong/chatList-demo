@@ -5,6 +5,7 @@
             <img-msg v-if="item.type === 'img' && showImgMsg" :revocation="revocation" :item="item" :msgSource="item.userId === 0"></img-msg>
             <text-msg v-if="item.type === 'text' && showTextMsg" :revocation="revocation" :item="item" :msgSource="item.userId === 0"></text-msg>
             <sys-msg v-if="item.type === 'system' && showSysMsg" :item="item"></sys-msg>
+            <slot></slot>
         </div>
         <div class="bottom" ref="bottom"></div>
     </div>
